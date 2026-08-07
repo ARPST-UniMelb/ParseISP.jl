@@ -309,6 +309,12 @@ const FIELD_MEANINGS = Dict(
         "mttrfull" => "Mean time to repair after a full outage, in hours.",
         "mttrpart" => "Mean time to repair after a partial outage, in hours.",
         "n" => "Maximum number of storage units available or online.",
+        "ffr" => "Fast-frequency-response provision flag.",
+        "pfr" => "Primary-frequency-response provision flag.",
+        "res2" => "Secondary-reserve provision flag.",
+        "res3" => "Tertiary or regulation-reserve provision flag.",
+        "powerfactor" => "Power factor.",
+        "contingency" => "Contingency.",
     ],
     "Generator" => [
         "id_gen" => "Unique generator identifier.",
@@ -346,6 +352,8 @@ const FIELD_MEANINGS = Dict(
         "shut_down_cost" => "Shutdown cost in dollars.",
         "start_up_time" => "Time required to start a unit, in hours.",
         "shut_down_time" => "Time required to shut down a unit, in hours.",
+        "powerfactor" => "Power factor.",
+        "contingency" => "Contingency.",
     ],
     "Line" => [
         "id_lin" => "Unique line or transfer-corridor identifier.",
