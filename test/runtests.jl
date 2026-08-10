@@ -22,4 +22,5 @@ include("test_source_availability.jl")
     include("test_source_specs_2026.jl")
     include("test_pipeline_integration_2024.jl")
     include("test_pipeline_regression_fixture_2024.jl")
+    include("test_parameters_2026.jl")
 end
