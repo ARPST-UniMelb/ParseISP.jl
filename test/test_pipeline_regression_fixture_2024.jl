@@ -24,7 +24,9 @@
 using DataFrames
 using TOML
 
-include(joinpath(@__DIR__, "support", "pipeline_regression.jl"))
+if !isdefined(@__MODULE__, :PipelineRegressionCase)
+    include(joinpath(@__DIR__, "support", "pipeline_regression.jl"))
+end
 
 const FIXTURE_ROOT = normpath(joinpath(@__DIR__, "data", "isp2024"))
 const FIXTURE_DOWNLOAD_ROOT = joinpath(FIXTURE_ROOT, "pisp-downloads")

@@ -1,9 +1,8 @@
 [authority]
-tag = "0.1.0"
+tag = "pre-0.1.0"
 julia_version = "1.12.4"
-commit = "b3e027a30839d3585fe430280848338a00167674"
+commit = "1df416558608650c07a904e0d4801d639fdb5872"
 package = "PISP"
-source_dir = "/Users/myasirroni/.claude/jobs/cc31e415/tmp/trusted-0.1.0"
 worktree_dirty = false
 
 [case]

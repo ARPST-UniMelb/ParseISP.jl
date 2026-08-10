@@ -19,6 +19,14 @@ All Julia scripts expect to be run with the package environment active:
 julia --project=. scripts/<script>.jl ...
 ```
 
+## `test/`
+
+Tests for this directory's own tooling (the comparator, baseline loader, and Git LFS pointer detection in `audit_pipeline_regression.jl`), not for `src/` — so they live here rather than under the package's `test/`, mirroring how `docs/test/` holds tests for documentation tooling rather than `src/`. Not run by `Pkg.test()`; run directly:
+
+```sh
+julia --project=. scripts/test/runtests.jl
+```
+
 ## `build_pipeline_regression_data_2024.jl`
 
 Builds the reduced, `pisp-downloads`-shaped fixture tree that lives at `test/data/isp2024/pisp-downloads/` (committed via Git LFS), so routine tests never need the maintainer's full ~66GB local ISP 2024 collection. It only builds/checks the fixture files themselves — it does not touch Git LFS wiring, `.gitattributes`/`.gitignore`, or run the pipeline comparison (see `audit_pipeline_regression.jl` for that).
