@@ -42,3 +42,12 @@ build/
 CLAUDE*
 AGENTS*
 .claude/
+
+/test/data/isp2024/*
+!/test/data/isp2024/fixture-manifest.toml
+!/test/data/isp2024/NOTICE.md
+!/test/data/isp2024/pisp-downloads/
+/test/data/isp2024/pisp-downloads/**
+!/test/data/isp2024/pisp-downloads/**/
+!/test/data/isp2024/pisp-downloads/**/*.csv
+!/test/data/isp2024/pisp-downloads/**/*.xlsx
