@@ -3,3 +3,4 @@ test/data/isp2024/pisp-downloads/*.xlsx filter=lfs diff=lfs merge=lfs -text
 test/data/isp2024/pisp-downloads/**/*.xlsx filter=lfs diff=lfs merge=lfs -text
 test/data/isp2024/pisp-downloads/**/*.csv filter=lfs diff=lfs merge=lfs -text
 test/data/isp2024/pisp-downloads/*.csv filter=lfs diff=lfs merge=lfs -text
+test/data/isp2024/pisp-baselines/**/*.arrow filter=lfs diff=lfs merge=lfs -text
