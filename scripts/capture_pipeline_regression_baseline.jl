@@ -4,26 +4,15 @@
 #
 # Implements exactly one subcommand, `capture`, which runs the fixed
 # `PIPELINE_REGRESSION_CASES` matrix against a `pisp-downloads`-shaped
-# fixture directory using whichever package is active in the current Julia
-# project (selected by the caller's `--project=` flag, not by this script),
-# and serialises the resulting 19 in-memory tables per case to Arrow files
-# plus a `baseline.toml` describing the authority (git commit/tag of the
-# active package's source directory), the case parameters, and per-table
-# shape/hash. Writes only to `--output-root`; never touches the fixture or
-# any committed baseline tree.
+# fixture directory using whichever package the caller's `--project=` flag
+# has active, and writes each case's 19 tables to Arrow files plus a
+# `baseline.toml` recording that package's git commit/tag and per-table
+# shape/hash. Writes only to `--output-root`; promotion into a committed
+# baseline tree is a separate, explicit step (see `scripts/README.md`).
 #
-# To capture from a specific trusted commit rather than the current
-# checkout, first create a separate worktree at that commit and instantiate
-# its own environment, then point `--project=` at it:
-#   git worktree add /path/to/trusted-worktree <tag-or-commit>
-#   julia --project=/path/to/trusted-worktree -e 'using Pkg; Pkg.instantiate()'
-#   julia --project=/path/to/trusted-worktree scripts/capture_pipeline_regression_baseline.jl \
-#       capture --fixture-root <path> --output-root <path>
-#
-# Promotion of a reviewed staging tree into the committed
-# `test/data/isp2024/pisp-baselines/` path is a separate, explicit file
-# operation performed after review — this script never writes there
-# directly.
+# Usage:
+#   julia --project=<target> scripts/capture_pipeline_regression_baseline.jl capture \
+#       --fixture-root <path> --output-root <path> [--case <case-id>]
 
 using Pkg
 using Dates

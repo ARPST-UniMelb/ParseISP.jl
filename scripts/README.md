@@ -7,6 +7,7 @@ Run them manually from the repo root.
 | Script | Purpose |
 | --- | --- |
 | [`build_pipeline_regression_data_2024.jl`](#build_pipeline_regression_data_2024jl) | Build (or verify) the small, committed regression fixture under `test/data/isp2024/` from a full local ISP 2024 data collection. |
+| [`capture_pipeline_regression_baseline.jl`](#capture_pipeline_regression_baselinejl) | Capture the 19-table regression matrix from a package checkout (current or a pinned trusted worktree) into Arrow files plus a `baseline.toml`. |
 | [`audit_pipeline_regression.jl`](#audit_pipeline_regressionjl) | Prove the fixture is value-preserving by running the pipeline against both the full data and the fixture, and diffing the resulting tables exactly. |
 | [`audit_source_spec_equivalence.jl`](#audit_source_spec_equivalencejl) | Prove that `ParseISP`'s declarative `source_spec`-based reads return the same data as literal, hardcoded workbook/sheet/range reads. |
 | [`test_coverage.sh`](#test_coveragesh) | Run the test suite with coverage instrumentation and print/write a coverage report. |
@@ -75,6 +76,33 @@ julia --project=. scripts/build_pipeline_regression_data_2024.jl check \
 > collection. That collection is not part of this repository, so `build`
 > cannot be run without access to it — `check` is the mode most contributors
 > can realistically use, and only if they have that source tree locally.
+
+## `capture_pipeline_regression_baseline.jl`
+
+Runs the fixed `PIPELINE_REGRESSION_CASES` matrix (defined in `test/support/pipeline_regression.jl`) against a `pisp-downloads`-shaped fixture directory, using whichever package the caller's `--project=` flag has active, and writes each case's 19 tables to `--output-root/<case-id>/tables/*.arrow` plus a `baseline.toml` recording that package's git commit/tag and per-table row/column counts, column names, and SHA-256.
+
+To capture from the current checkout:
+
+```sh
+julia --project=. scripts/capture_pipeline_regression_baseline.jl capture \
+  --fixture-root test/data/isp2024/pisp-downloads \
+  --output-root /tmp/baseline-staging
+```
+
+To capture from a specific trusted commit instead, point `--project=` at a separate worktree pinned to that commit:
+
+```sh
+git worktree add /tmp/trusted-worktree <tag-or-commit>
+julia --project=/tmp/trusted-worktree -e 'using Pkg; Pkg.instantiate()'
+julia --project=/tmp/trusted-worktree scripts/capture_pipeline_regression_baseline.jl capture \
+  --fixture-root test/data/isp2024/pisp-downloads \
+  --output-root /tmp/baseline-staging
+```
+
+`--output-root` is created if missing; existing files under it for the same case id are overwritten. Promotion of a reviewed staging tree into the committed `test/data/isp2024/pisp-baselines/` path is a separate, explicit file operation — this script never writes there directly.
+
+> [!NOTE]
+> `check` (candidate-vs-baseline comparison) is not implemented.
 
 ## `audit_pipeline_regression.jl`
 
