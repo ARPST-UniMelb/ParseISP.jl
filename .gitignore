@@ -43,6 +43,7 @@ CLAUDE*
 AGENTS*
 .claude/
 
+!test/data/
 /test/data/isp2024/*
 !/test/data/isp2024/fixture-manifest.toml
 !/test/data/isp2024/NOTICE.md
