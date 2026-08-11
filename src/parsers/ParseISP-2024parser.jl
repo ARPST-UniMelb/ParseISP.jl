@@ -1386,10 +1386,10 @@ function gen_retirements(ts, tv)
     ppmaxid = isempty(tv.gen_pmax) ? 0 : maximum(tv.gen_pmax.id)
 
     for scid in keys(ParseISP.ID2SCE)
-        for unit in ParseISP.Retirements2024[scid]
-            genid = gent[gent[!,:name] .== unit[1], :id_gen][1]
-            for ndata in unit[2]
-                pnid+=1; 
+        for name in ParseISP.RETIREMENT_ORDER_2024
+            genid = gent[gent[!,:name] .== name, :id_gen][1]
+            for ndata in ParseISP.Retirements2024[scid][name]
+                pnid+=1;
                 push!(tv.gen_n, [pnid, genid, scid, DateTime(ndata[3],ndata[2],ndata[1]), ndata[4]])
             end
         end
@@ -1713,7 +1713,7 @@ function gen_pmax_solar(tc::ParseISPtimeConfig, ts::ParseISPtimeStatic, tv::Pars
     # println(REZ_BUS)
 
     genid = Dict()
-    for st in setdiff(keys(ParseISP.NEMBUSNAME),["GG", "SNW"]) ## Buses with no large-scale solar projects or REZ are not considered
+    for st in ParseISP.LARGE_SOLAR_BUS_ORDER
         gid += 1
         bus_data = bust[bust[!,:name] .== st, :]
         bus_id = bus_data[!, :id_bus][1]    
@@ -1757,7 +1757,7 @@ function gen_pmax_solar(tc::ParseISPtimeConfig, ts::ParseISPtimeStatic, tv::Pars
         
         y = ms < 7 ? yr - 1 : yr
 
-        for st in setdiff(keys(ParseISP.NEMBUSNAME),["GG", "SNW"]) # Buses with no large-scale solar projects are not considered
+        for st in ParseISP.LARGE_SOLAR_BUS_ORDER
 
             REZs = REZ_BUS[(REZ_BUS[!,Symbol("ISP Sub-region")] .== st),:ID]
             REZSUM = REZ_BUS[(REZ_BUS[!,Symbol("ISP Sub-region")] .== st),[:ID,:Name,Symbol("ISP Sub-region")]]
@@ -1906,7 +1906,7 @@ function gen_pmax_wind(tc::ParseISPtimeConfig, ts::ParseISPtimeStatic, tv::Parse
     REZ_BUS = ParseISP.read_xlsx_with_header(ispdata24, ISP2024_RENEWABLE_ENERGY_ZONES_SOURCE)
 
     genid = Dict()
-    for st in setdiff(keys(ParseISP.NEMBUSNAME),["GG"]) ## Buses with no large-scale solar projects or REZ are not considered
+    for st in ParseISP.LARGE_WIND_BUS_ORDER
         gid += 1
         bus_data = bust[bust[!,:name] .== st, :]
         bus_id = bus_data[!, :id_bus][1]    
@@ -1953,7 +1953,7 @@ function gen_pmax_wind(tc::ParseISPtimeConfig, ts::ParseISPtimeStatic, tv::Parse
         
         y = ms < 7 ? yr - 1 : yr
 
-        for st in setdiff(keys(ParseISP.NEMBUSNAME),["GG"]) # Buses with no large-scale wind are not considered
+        for st in ParseISP.LARGE_WIND_BUS_ORDER
 
             REZs = REZ_BUS[(REZ_BUS[!,Symbol("ISP Sub-region")] .== st),:ID]
             REZSUM = REZ_BUS[(REZ_BUS[!,Symbol("ISP Sub-region")] .== st),[:ID,:Name,Symbol("ISP Sub-region")]]

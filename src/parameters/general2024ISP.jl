@@ -22,7 +22,13 @@ NEMBUSNAME = OrderedDict(
                         "TAS"   =>  "Tasmania", 
                         "CSA"   =>  "Central South Australia",
                         "SESA"  => "South East South Australia")
-# Buses locations            
+# Frozen bus order for solar/wind id_gen assignment.
+# NOTE:
+#   This is due to bug caused by inconsistent order across Julia versions.
+#   This is currently only impact `LSPV_`, `WIND_`, and retired generators.
+LARGE_SOLAR_BUS_ORDER = ["CQ","VIC","NNSW","SQ","CSA","NQ","SNSW","CNSW","TAS","SESA"]
+LARGE_WIND_BUS_ORDER  = ["CQ","VIC","NNSW","SQ","CSA","NQ","SNSW","CNSW","TAS","SESA","SNW"]
+# Buses locations
 NEMBUSES = OrderedDict(        "NQ"    => [-17.79385, 145.5635],       #1
                         "CQ"    =>  [-22.82420, 149.40361],     #2
                         "GG"    =>  [-23.842948, 151.248803],   #3

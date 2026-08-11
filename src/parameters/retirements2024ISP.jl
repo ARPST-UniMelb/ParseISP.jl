@@ -2,17 +2,17 @@
 Reduction2024 = [
             # PROGRESSIVE CHANGE
                 # FLEXIBLE GAS CSA
-            Dict("Quarantine"      => [(1,7,2044,106)]),
+            OrderedDict("Quarantine"      => [(1,7,2044,106)]),
             # STEP CHANGE
                 # FLEXIBLE GAS CSA
-            Dict("Quarantine"      => [(1,7,2044,106)]),
+            OrderedDict("Quarantine"      => [(1,7,2044,106)]),
             # GREEN ENERGY EXPORTS
                 # FLEXIBLE GAS CSA
-            Dict("Quarantine"      => [(1,7,2044,106)]),]
+            OrderedDict("Quarantine"      => [(1,7,2044,106)]),]
 
 # GENERATION RETIREMENTS FOR CDP 14
 Retirements2024 = [
-                    Dict(# PROGRESSIVE CHANGE ID 1
+                    OrderedDict(# PROGRESSIVE CHANGE ID 1
                     #BLACK COAL
                         #NQ
                         #CQ
@@ -102,7 +102,7 @@ Retirements2024 = [
                         "Tamar Valley Peaking" => [(1,7,2050,0)]#x1 PROGRESSIVE 
                     ),
 
-                    Dict(# STEP CHANGE ID 2
+                    OrderedDict(# STEP CHANGE ID 2
                     #BLACK COAL
                         #NQ
                         #CQ
@@ -192,7 +192,7 @@ Retirements2024 = [
                         "Tamar Valley Peaking" => [(1,7,2050,0)]#x1
                     ),
 
-                    Dict(# GREEN ENERGY EXPORTS ID 3
+                    OrderedDict(# GREEN ENERGY EXPORTS ID 3
                     #BLACK COAL
                         #NQ
                         #CQ
@@ -284,3 +284,8 @@ Retirements2024 = [
                     ),
 
 ]
+
+# NOTE:
+#   This is due to bug caused by inconsistent order across Julia versions.
+#   This is currently only impact `LSPV_`, `WIND_`, and retired generators.
+RETIREMENT_ORDER_2024 = ["Vales Point B", "Barcaldine Power Station", "Callide C", "Mt Piper", "Yarwun Cogen", "Tamar Valley Peaking", "Yallourn W", "Bell Bay Three", "Uranquinty", "Gladstone", "Newport", "Ladbroke Grove", "Townsville Power Station", "Jeeralang B", "Kogan Creek", "Tarong", "Dry Creek GT", "Braemar", "Tarong North", "Braemar 2 Power Station", "Eraring", "Darling Downs", "Bolivar Power Station", "Mt Stuart", "Loy Yang B", "Bayswater", "Bairnsdale", "Somerton", "Port Lincoln GT", "Torrens Island B", "Pelican Point", "Oakey Power Station", "Smithfield Energy Facility", "Condamine A", "Tallawarra", "Mortlake", "Barker Inlet Power Station", "Loy Yang A Power Station", "Roma", "Mintaro GT", "Callide B", "Tamar Valley Combined Cycle", "Snapper Point Power Station", "Swanbank E GT", "Stanwell", "Osborne", "Snuggery", "Jeeralang A", "Millmerran", "Hallett GT"]
