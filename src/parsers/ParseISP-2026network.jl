@@ -27,7 +27,7 @@ values remain missing, and no bus mapping or output projection is applied.
 function read_isp2026_flow_path_augmentation_options(path::AbstractString)
     spec = source_spec(:flow_path_augmentation_options, 2026)
     raw = read_xlsx_rows(path, spec)
-    table = DataFrame(Symbol(name) => Any[] for name in getfield.(spec.columns, :name))
+    table = DataFrame([Symbol(name) => Any[] for name in getfield.(spec.columns, :name)])
     source_rows = Int[]
     current_flow_path = missing
 
