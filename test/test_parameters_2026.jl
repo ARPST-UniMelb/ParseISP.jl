@@ -25,6 +25,8 @@ function assert_isp2026_argument_error(call, rejected, supported)
 end
 
 @testset "ISP 2026 scenario parameters" begin
+    @test isfile(joinpath(dirname(@__DIR__), "src", "parameters", "scenarios2026ISP.jl"))
+    @test !isfile(joinpath(dirname(@__DIR__), "src", "parameters", "isp2026.jl"))
     scenarios = ParseISP.isp2026_scenarios()
 
     @test scenarios === ParseISP.ISP2026_SCENARIOS

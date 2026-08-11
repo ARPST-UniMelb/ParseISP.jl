@@ -485,3 +485,7 @@ function source_spec_diff_row(diff::SourceSpecDiff)
 end
 
 source_spec_diff_rows(diffs::AbstractVector{SourceSpecDiff}) = source_spec_diff_row.(diffs)
+
+# Keep common source-spec types, registry, lookup, and edition loading here;
+# edition definitions live beneath an explicit source-spec boundary.
+include("source_specs/isp2026.jl")

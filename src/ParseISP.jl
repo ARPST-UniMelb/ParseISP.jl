@@ -10,7 +10,6 @@ module ParseISP
     include("ParseISPdatamodel.jl")
     include("ParseISPstructures.jl")
     include("ParseISPsource_specs.jl")
-    include("ParseISPsource_specs_2026.jl")
     include("ParseISPutils.jl")
     include("ParseISPparameters.jl")
     include("ParseISPparsers.jl")

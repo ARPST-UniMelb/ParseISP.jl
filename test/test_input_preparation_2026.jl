@@ -145,6 +145,12 @@ end
 @testset "ISP 2026 input preparation" begin
     @test isdefined(ParseISP, :prepare_isp2026_inputs)
     @test !(:prepare_isp2026_inputs in names(ParseISP))
+    @test isdefined(ParseISP, :prepare_isp_inputs)
+    @test !(:prepare_isp_inputs in names(ParseISP))
+    unsupported = preparation_error() do
+        ParseISP.prepare_isp_inputs(2030, tempdir())
+    end
+    @test occursin("supported editions: 2024, 2026", unsupported)
 
     @testset "successful, normalized, and idempotent" begin
         mktempdir() do parent
