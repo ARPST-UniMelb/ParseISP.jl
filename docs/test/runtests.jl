@@ -16,7 +16,6 @@ include(joinpath(@__DIR__, "doc_invariants.jl"))
         ".gitignore",
         "Project.toml",
         "README.md",
-        "audits",
         "build_all.jl",
         "config",
         "doctests.jl",
@@ -645,26 +644,6 @@ end
     trace_coverage = reader_text(read(joinpath(TEST_DOCS_DIR, "src", "editions", "trace-coverage.md"), String))
     @test occursin("2025-inputs-assumptions-and-scenarios-report.pdf#page=234", trace_coverage)
     @test occursin("2025-isp-methodology.pdf#page=40", trace_coverage)
-
-    page_purpose_audit = reader_text(read(
-        joinpath(TEST_DOCS_DIR, "audits", "reference-validation-page-purpose.md"),
-        String,
-    ))
-    for page_id in (
-        "isp2024-source-data",
-        "isp2024-output-tables",
-        "isp2024-parameters-and-mappings",
-        "isp2024-buildout-defaults",
-        "isp2024-hydro-parameters-and-constants",
-        "isp2024-source-data-inventory",
-        "isp2024-workbook-and-trace-structure",
-        "isp2024-temperature-data-coverage",
-        "isp2024-generated-output-consistency",
-        "isp2026-source-data",
-        "isp2026-workbook-and-trace-structure",
-    )
-        @test occursin("| `$(page_id)` |", page_purpose_audit)
-    end
 end
 
 @testset "Human-use documentation invariants" begin

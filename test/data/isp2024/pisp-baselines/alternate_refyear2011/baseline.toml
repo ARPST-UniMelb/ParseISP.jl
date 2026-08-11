@@ -1,0 +1,129 @@
+[authority]
+tag = "pre-0.1.0"
+julia_version = "1.12.4"
+commit = "1df416558608650c07a904e0d4801d639fdb5872"
+package = "PISP"
+worktree_dirty = false
+
+[case]
+scenarios = [2]
+dend = "2024-10-01T23:00:00"
+refyear = 2011
+id = "alternate_refyear2011"
+poe = 10
+skip_traces = false
+dstart = "2024-09-30T00:00:00"
+
+[tables.varying__ess_emax]
+sha256 = "6a590481e9b4cd4657a2684eca6d0383fa3a883c1a7c60fe605baec756794c25"
+rows = 12
+column_names = ["id", "id_ess", "scenario", "date", "value"]
+columns = 5
+
+[tables.static__dem]
+sha256 = "4378671e226a07efbf463070fbd286daad4b679af354c3d1335475c0841f0e9f"
+rows = 12
+column_names = ["id_dem", "name", "load_", "id_bus", "active", "controllable", "voll", "contingency"]
+columns = 8
+
+[tables.varying__line_fwcap]
+sha256 = "9bc5cc9f5b72e9078cbc879bf7530783905028f62c852d05e8c7e8b3a5f26239"
+rows = 34
+column_names = ["id", "id_lin", "scenario", "date", "value"]
+columns = 5
+
+[tables.static__gen]
+sha256 = "988c68571416b57a9029bf1c758f2361be798c04f0c45d8200b5d3d05d1c8980"
+rows = 124
+column_names = ["id_gen", "name", "alias", "fuel", "tech", "type", "capacity", "forate", "fullout", "partialout", "derate", "mttrfull", "mttrpart", "id_bus", "pmin", "pmax", "rup", "rdw", "investment", "active", "cvar", "cfuel", "cvom", "cfom", "co2", "slope", "hrate", "pfrmax", "g", "inertia", "ffr", "pfr", "res2", "res3", "powerfactor", "latitude", "longitude", "n", "contingency", "down_time", "up_time", "last_state", "last_state_period", "last_state_output", "start_up_cost", "shut_down_cost", "start_up_time", "shut_down_time"]
+columns = 48
+
+[tables.varying__gen_pmax]
+sha256 = "0fe53fdfbed3d6b62ebca6ff2633a343624f1d8991a05f8fe8eb99a1b918b013"
+rows = 1587
+column_names = ["id", "id_gen", "scenario", "date", "value"]
+columns = 5
+
+[tables.varying__gen_inflow]
+sha256 = "138956409654c925991ab628dfcddd44740b55e30e5cd9bb05edb7fb23a89bc8"
+rows = 1440
+column_names = ["id", "id_gen", "scenario", "date", "value"]
+columns = 5
+
+[tables.static__der]
+sha256 = "51dc445dc1f263eb12e585b5760302c929ca5f2a8356fefb3a7c940e04dd89cf"
+rows = 72
+column_names = ["id_der", "name", "tech", "id_dem", "active", "investment", "capacity", "reduct", "pred_max", "cost_red", "n"]
+columns = 11
+
+[tables.varying__ess_pmax]
+sha256 = "b08739232ea2a67fe620b93e6feded7b258fd3e8f54e4d82189e2e55a5891eb0"
+rows = 12
+column_names = ["id", "id_ess", "scenario", "date", "value"]
+columns = 5
+
+[tables.varying__line_rvcap]
+sha256 = "96d7fe57446b0ae11c3875ab6efaf6265d4de2a6a6279f4a60d6e61d8694d50e"
+rows = 34
+column_names = ["id", "id_lin", "scenario", "date", "value"]
+columns = 5
+
+[tables.varying__ess_lmax]
+sha256 = "b08739232ea2a67fe620b93e6feded7b258fd3e8f54e4d82189e2e55a5891eb0"
+rows = 12
+column_names = ["id", "id_ess", "scenario", "date", "value"]
+columns = 5
+
+[tables.static__bus]
+sha256 = "b42d7c1594cbc89db78b9d8fbd4d215344a80eaa6569c97d99aed8d71d0bb844"
+rows = 12
+column_names = ["id_bus", "name", "alias", "active", "latitude", "longitude", "id_area"]
+columns = 7
+
+[tables.varying__ess_n]
+sha256 = "a2c5c2e5c659c9e38eb43e0112c75a41a71250315e8080b26f5ff2e6da458907"
+rows = 84
+column_names = ["id", "id_ess", "scenario", "date", "value"]
+columns = 5
+
+[tables.static__line]
+sha256 = "4f93b19239e908d89383aa23ccf6d5905ce4b0c2dbad1b2ebcea192319a767f4"
+rows = 54
+column_names = ["id_lin", "name", "alias", "tech", "capacity", "id_bus_from", "id_bus_to", "investment", "active", "r", "x", "rvcap", "fwcap", "fullout", "mttrfull", "voltage", "segments", "latitude", "longitude", "length", "n", "contingency"]
+columns = 22
+
+[tables.varying__ess_inflow]
+sha256 = "f84e39159b97b7bc20f6d058d0275f865a278735ab6d81a11abc3149380a6848"
+rows = 48
+column_names = ["id", "id_ess", "scenario", "date", "value"]
+columns = 5
+
+[tables.config__problem]
+sha256 = "d859b5319c50c32bed618ffa3e06a4259b87ca2077c8d3abf1619956a2b7ffcf"
+rows = 1
+column_names = ["id", "name", "scenario", "weight", "problem_type", "dstart", "dend", "tstep"]
+columns = 8
+
+[tables.varying__der_pred]
+sha256 = "195040f4f5b6e7495d27e8d89d831fc4d2a97119c95f5d865f89c24df023ec5f"
+rows = 11736
+column_names = ["id", "id_der", "scenario", "date", "value"]
+columns = 5
+
+[tables.varying__gen_n]
+sha256 = "54d69f00dc07c6f24510db3ddb219ff86aa8da55015d2dcd22fb779ef30de6df"
+rows = 201
+column_names = ["id", "id_gen", "scenario", "date", "value"]
+columns = 5
+
+[tables.static__ess]
+sha256 = "934cf08d7eb25c692bd712de3975a359e18d8fc6275e47ec773414f839b46246"
+rows = 73
+column_names = ["id_ess", "name", "alias", "tech", "type", "capacity", "investment", "active", "id_bus", "ch_eff", "dch_eff", "eini", "emin", "emax", "pmin", "pmax", "lmin", "lmax", "fullout", "partialout", "mttrfull", "mttrpart", "inertia", "powerfactor", "ffr", "pfr", "res2", "res3", "fr_db", "fr_ad", "fr_dt", "fr_frt", "fr_fr", "longitude", "latitude", "n", "contingency"]
+columns = 37
+
+[tables.varying__dem_load]
+sha256 = "d67cff89ca48c792520c7e0cc86faa6e7daac0a0491088e8f95b5477e043f824"
+rows = 576
+column_names = ["id", "id_dem", "scenario", "date", "value"]
+columns = 5
