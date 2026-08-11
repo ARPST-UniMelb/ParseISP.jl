@@ -48,6 +48,24 @@ const EXPECTED_ISP2026_XLSX_SPECS = [
         columns = ["Line/Flowpath", "Implementation", "Unplanned Outage Rate (%)", "Mean Time to Repair"],
     ),
     (
+        id = :network_capability,
+        workbook = "2026-isp-inputs-and-assumptions-workbook.xlsm",
+        worksheet = "Network capability",
+        cell_range = "B6:H30",
+        source_family = :network,
+        columns = ["Flow path", "Forward peak (MW)", "Forward summer (MW)", "Forward winter (MW)",
+                   "Reverse peak (MW)", "Reverse summer (MW)", "Reverse winter (MW)"],
+    ),
+    (
+        id = :flow_path_augmentation_options,
+        workbook = "2026-isp-inputs-and-assumptions-workbook.xlsm",
+        worksheet = "Flow path augmentation options",
+        cell_range = "B11:O127",
+        source_family = :network,
+        columns = ["Flow path", "Option", "Power-flow direction", "Forward increase (MW)",
+                   "Reverse increase (MW)", "Indicative cost (\$2025 million)", "Easement (km)", "Lead time"],
+    ),
+    (
         id = :renewable_energy_zones,
         workbook = "2026-isp-inputs-and-assumptions-workbook.xlsm",
         worksheet = "Renewable energy zones",
@@ -93,7 +111,6 @@ const EXPECTED_ISP2026_CSV_SPECS = [
         by = string,
     )
     @test getfield.(specs, :id) == expected_ids
-
     for expected in EXPECTED_ISP2026_XLSX_SPECS
         spec = ParseISP.source_spec(expected.id, 2026)
         @test spec isa ParseISP.XlsxSourceSpec
