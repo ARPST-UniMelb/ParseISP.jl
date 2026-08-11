@@ -1,5 +1,7 @@
 # Tests
 
+## Test `src/`
+
 Tests for `src/`. Run with:
 
 ```sh
@@ -20,4 +22,17 @@ julia --project=. -e 'using Pkg; Pkg.test()'
 
 `support/pipeline_regression.jl` isn't a test — it's the shared six-case matrix and table selector used by `test_pipeline_regression_fixture_2024.jl` above and by the scripts under `../scripts/`.
 
-Tests for `scripts/` tooling itself (not `src/`) live at `../scripts/test/`, not here — see `../scripts/README.md`.
+For running a specific test file mimic this example,
+
+```sh
+julia --project=. -e '
+using ParseISP, Test, Dates
+
+include("test/test_report_downloader_2024.jl")
+include("test/test_report_downloader_2026.jl")
+'
+```
+
+## Other test
+
+Tests for `scripts/` and `docs/` live at at their respective directory.

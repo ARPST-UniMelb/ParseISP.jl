@@ -104,7 +104,7 @@
         existing = "%PDF-1.7\nexisting"
         write(destination, existing)
 
-        result = core.download_report_targets([target];
+        result = @test_logs (:warn, "Failed to download ISP report; continuing with later targets") core.download_report_targets([target];
             outdir=outdir,
             overwrite=true,
             download_function=(url, path; headers) -> write(path, "not a PDF"))
@@ -119,7 +119,7 @@
 
     mktempdir() do outdir
         target = targets[4]
-        result = core.download_report_targets([target];
+        result = @test_logs (:warn, "Failed to download ISP report; continuing with later targets") core.download_report_targets([target];
             outdir=outdir,
             download_function=(url, path; headers) -> error("request failed"))
 
@@ -157,7 +157,7 @@
         failed_target, successful_target = targets[1], targets[2]
         successful_destination = joinpath(outdir, successful_target.filename)
 
-        result = core.download_report_targets([failed_target, successful_target];
+        result = @test_logs (:warn, "Failed to download ISP report; continuing with later targets") core.download_report_targets([failed_target, successful_target];
             outdir=outdir,
             download_function=function (url, path; headers)
                 url == failed_target.url && error("temporary upstream failure")
