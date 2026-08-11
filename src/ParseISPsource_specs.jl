@@ -486,4 +486,4 @@ end
 
 source_spec_diff_rows(diffs::AbstractVector{SourceSpecDiff}) = source_spec_diff_row.(diffs)
 
-include("source_specs/isp2026.jl")
+include("source_specs/ParseISP-2026specs.jl")
