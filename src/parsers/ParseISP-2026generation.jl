@@ -31,6 +31,29 @@ function _isp2026_generation_rows(raw, names, header_rows, source_id, first_sour
     return DataFrame(columns; makeunique = false)
 end
 
+function _validate_isp2026_existing_generation_qualifiers(raw, spec::XlsxSourceSpec)
+    names = getfield.(spec.columns, :name)
+    for (name, qualifiers) in _ISP2026_EXISTING_GENERATION_QUALIFIERS
+        column = findfirst(==(name), names)
+        column === nothing && throw(ArgumentError(
+            "Source $(spec.id) is missing the qualified column `$(name)`.",
+        ))
+        for (header_row, expected) in qualifiers
+            header_row <= size(raw, 1) || throw(ArgumentError(
+                "Source $(spec.id) is missing workbook header row $(header_row) " *
+                "for `$(name)`.",
+            ))
+            observed = _isp2026_generation_header(raw[header_row, column])
+            observed == expected || throw(ArgumentError(
+                "Source $(spec.id) has an unexpected lower-level header for `$(name)` " *
+                "at workbook row $(header_row + 9): expected `$(expected)`, " *
+                "observed `$(observed)`.",
+            ))
+        end
+    end
+    return nothing
+end
+
 function _validate_isp2026_generation_types(table, spec::XlsxSourceSpec)
     for column in spec.columns
         column.data_type === nothing && continue
@@ -65,12 +88,19 @@ end
 
 """Read `Existing Gen Data Summary!B10:AT738`, including its three header layers."""
 function read_isp2026_existing_generator_summary(path::AbstractString)
-    return _read_isp2026_generation_table(
-        path,
-        source_spec(:existing_generator_summary, 2026);
-        header_rows = 3,
-        first_source_row = 13,
+    spec = source_spec(:existing_generator_summary, 2026)
+    isfile(path) || throw(ArgumentError("Source $(spec.id) workbook not found: $(path)."))
+    raw = read_xlsx_rows(path, spec)
+    _validate_isp2026_existing_generation_qualifiers(raw, spec)
+    table = _isp2026_generation_rows(
+        raw,
+        getfield.(spec.columns, :name),
+        3,
+        spec.id,
+        13,
     )
+    validate_source_columns(table, spec)
+    return _validate_isp2026_generation_types(table, spec)
 end
 
 const read_isp2026_existing_generation = read_isp2026_existing_generator_summary
@@ -111,14 +141,20 @@ function read_isp2026_new_entrant_maximum_capacity(path::AbstractString)
     )
 end
 
-"""Read `Summary Mapping!B4:AF1381`, retaining blank source rows."""
+"""Read `Summary Mapping!B4:AF1381`, retaining only rows with a real `RowID`."""
 function read_isp2026_generator_summary_mapping(path::AbstractString)
-    return _read_isp2026_generation_table(
+    table = _read_isp2026_generation_table(
         path,
         source_spec(:generator_summary_mapping, 2026);
         header_rows = 3,
         first_source_row = 7,
     )
+    row_id = table[!, Symbol(first(_ISP2026_SUMMARY_MAPPING_COLUMNS))]
+    keep = [
+        !ismissing(value) && !(value isa AbstractString && isempty(strip(value)))
+        for value in row_id
+    ]
+    return table[keep, :]
 end
 
 const read_isp2026_summary_mapping = read_isp2026_generator_summary_mapping

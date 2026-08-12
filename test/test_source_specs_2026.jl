@@ -212,6 +212,25 @@ const EXPECTED_ISP2026_CSV_SPECS = [
         )
     end
 
+    new_capacity = ParseISP.source_spec(:new_entrant_maximum_capacity, 2026)
+    @test [
+        (column.name, column.data_type, column.unit)
+        for column in new_capacity.columns
+    ] == [
+        ("Technology Type", nothing, nothing),
+        ("Unit size (MW)", :Real, "MW"),
+        ("Number of units", :Integer, nothing),
+        ("Total plant size (MW)", :Real, "MW"),
+    ]
+
+    existing = ParseISP.source_spec(:existing_generator_summary, 2026)
+    existing_descriptions = Dict(column.name => column.description for column in existing.columns)
+    @test existing_descriptions["Summer peak rating (MW)"] == "Workbook row 12: `2025-26`"
+    @test existing_descriptions["Fuel cost (\$/GJ)"] ==
+          "Workbook row 11: `Step Change`; Workbook row 12: `2025-26`"
+    @test existing_descriptions["Scope 1 Emissions (kg/MWh)"] ==
+          "Workbook row 11: `Accelerated Transition`; Workbook row 12: `2025-26`"
+
     expected_trace_columns = [
         "Year", "Month", "Day", lpad.(string.(1:48), 2, '0')...,
     ]

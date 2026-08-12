@@ -42,7 +42,45 @@ const _ISP2026_SUMMARY_MAPPING_COLUMNS = [
     "Region (3)", "Total lead time",
 ]
 
-_isp2026_generation_columns(names) = ColumnSpec[ColumnSpec(name = name) for name in names]
+const _ISP2026_EXISTING_GENERATION_QUALIFIERS = Dict(
+    "Summer peak rating (MW)" => [(3, "2025-26")],
+    "Summer typical rating (MW)" => [(3, "2032-33")],
+    "Winter rating (MW)" => [(3, "2033")],
+    "Full outage (% of time)" => [(2, "Full outage (% of time)"), (3, "2025-26")],
+    "Partial outage (% of time)" => [(2, "Partial outage (% of time)"), (3, "2025-26")],
+    "Full outage MTTR (hrs)" => [(2, "Full outage MTTR (hrs)"), (3, "2025-26")],
+    "Partial outage MTTR (hrs)" => [(2, "Partial outage MTTR (hrs)"), (3, "2025-26")],
+    "Partial Outage Derating Factor (%)" => [
+        (2, "Partial Outage Derating Factor (%)"),
+        (3, "2025-26"),
+    ],
+    "Fuel cost (\$/GJ)" => [(2, "Step Change"), (3, "2025-26")],
+    "Scope 1 Emissions (kg/MWh)" => [(2, "Accelerated Transition"), (3, "2025-26")],
+)
+
+function _isp2026_generation_column_description(name)
+    qualifiers = get(_ISP2026_EXISTING_GENERATION_QUALIFIERS, name, nothing)
+    qualifiers === nothing && return ""
+    return join(
+        ["Workbook row $(row + 9): `$(value)`" for (row, value) in qualifiers],
+        "; ",
+    )
+end
+
+_isp2026_generation_columns(names; descriptions = Dict()) = ColumnSpec[
+    ColumnSpec(
+        name = name,
+        description = get(descriptions, name, ""),
+    ) for name in names
+]
+
+const _ISP2026_EXISTING_GENERATION_COLUMN_SPECS = _isp2026_generation_columns(
+    _ISP2026_EXISTING_GENERATION_COLUMNS;
+    descriptions = Dict(
+        name => _isp2026_generation_column_description(name)
+        for name in keys(_ISP2026_EXISTING_GENERATION_QUALIFIERS)
+    ),
+)
 register_source_specs!(
     XlsxSourceSpec(
         id = :existing_generator_summary,
@@ -51,7 +89,7 @@ register_source_specs!(
         worksheet = "Existing Gen Data Summary",
         cell_range = "B10:AT738",
         description = "ISP 2026 unit-level existing generation inventory and attributes.",
-        columns = _isp2026_generation_columns(_ISP2026_EXISTING_GENERATION_COLUMNS),
+        columns = _ISP2026_EXISTING_GENERATION_COLUMN_SPECS,
         source_family = :generation,
     ),
     XlsxSourceSpec(
@@ -100,8 +138,11 @@ register_source_specs!(
         cell_range = "L10:O31",
         description = "ISP 2026 new-generation-technology maximum capacity assumptions.",
         columns = ColumnSpec[
-            ColumnSpec(name = name, data_type = i > 1 ? :Real : nothing,
-                       unit = i > 1 ? "MW" : nothing)
+            ColumnSpec(
+                name = name,
+                data_type = i in (2, 4) ? :Real : i == 3 ? :Integer : nothing,
+                unit = i in (2, 4) ? "MW" : nothing,
+            )
             for (i, name) in enumerate(_ISP2026_NEW_MAXIMUM_CAPACITY_COLUMNS)
         ],
         source_family = :generation,
