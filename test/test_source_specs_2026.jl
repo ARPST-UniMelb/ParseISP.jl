@@ -184,12 +184,25 @@ const EXPECTED_ISP2026_CSV_SPECS = [
     (:wind_availability_traces, "Traces/2026 ISP Wind traces/wind/*.csv", :wind_traces, false),
 ]
 
+const EXPECTED_ISP2026_RELIABILITY_SPECS = [
+    (:generator_reliability_long_duration, "Generator Reliability Settings", "B10:M16"),
+    (:generator_reliability_outage_rates, "Generator Reliability Settings", "B22:M57"),
+    (:generator_reliability_new_entrants, "Generator Reliability Settings", "B63:H84"),
+    (:generator_retirement, "Retirement", "B12:F738"),
+    (:coal_minimum_stable_level, "Coal Min Stable Level", "B12:G57"),
+    (:gpg_minimum_stable_level, "GPG Min Stable Level", "B11:E150"),
+    (:new_gpg_minimum_stable_level, "GPG Min Stable Level", "G11:H32"),
+    (:generator_max_ramp_rates, "Max Ramp Rates", "B8:F191"),
+    (:new_generator_max_ramp_rates, "Max Ramp Rates", "H8:J29"),
+]
+
 @testset "source specs: ISP 2026 definitions" begin
     specs = ParseISP.source_specs(2026)
     expected_ids = sort!(
         [
             getfield.(EXPECTED_ISP2026_XLSX_SPECS, :id)...,
             first.(EXPECTED_ISP2026_CSV_SPECS)...,
+            first.(EXPECTED_ISP2026_RELIABILITY_SPECS)...,
         ];
         by = string,
     )
@@ -264,4 +277,20 @@ const EXPECTED_ISP2026_CSV_SPECS = [
         "demand",
         "*.csv",
     )
+end
+
+@testset "source specs: ISP 2026 reliability boundaries" begin
+    for (id, worksheet, cell_range) in EXPECTED_ISP2026_RELIABILITY_SPECS
+        spec = ParseISP.source_spec(id, 2026)
+        @test spec isa ParseISP.XlsxSourceSpec
+        @test (spec.worksheet, spec.cell_range, spec.source_family) ==
+              (worksheet, cell_range, id in (:generator_retirement,) ? :generation_retirement :
+               id in (:coal_minimum_stable_level, :gpg_minimum_stable_level, :new_gpg_minimum_stable_level,
+                      :generator_max_ramp_rates, :new_generator_max_ramp_rates) ? :generation_operation :
+               :generation_reliability)
+    end
+
+    coal_columns = ParseISP.source_spec(:coal_minimum_stable_level, 2026).columns
+    @test all(isnothing, getfield.(coal_columns[1:3], :unit))
+    @test getfield.(coal_columns[4:6], :unit) == fill("MW", 3)
 end

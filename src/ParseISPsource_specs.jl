@@ -488,3 +488,4 @@ source_spec_diff_rows(diffs::AbstractVector{SourceSpecDiff}) = source_spec_diff_
 
 include("source_specs/ParseISP-2026specs.jl")
 include("source_specs/ParseISP-2026generation.jl")
+include("source_specs/ParseISP-2026reliability.jl")
