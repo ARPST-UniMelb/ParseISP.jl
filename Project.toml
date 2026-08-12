@@ -1,6 +1,6 @@
 name = "ParseISP"
 uuid = "0cf86302-bd88-49fb-82d1-7e27fc78d6eb"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["Pablo Apablaza <papablaza@student.unimelb.edu.au> and contributors"]
 
 [deps]
