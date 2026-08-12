@@ -40,6 +40,81 @@ const EXPECTED_ISP2026_XLSX_SPECS = [
         columns = ["CDP", "Region", "REZ", "REZ Name", "Technology", financial_years(2026, 2049)...],
     ),
     (
+        id = :existing_generator_summary,
+        workbook = "2026-isp-inputs-and-assumptions-workbook.xlsm",
+        worksheet = "Existing Gen Data Summary",
+        cell_range = "B10:AT738",
+        source_family = :generation,
+        columns = [
+            "IASR ID", "Power Station", "Technology Type", "Fuel Type", "Region",
+            "Sub-region", "REZ Location", "REZ ID", "Status", "Regional build cost zone",
+            "Maximum capacity (MW)", "Storage capacity (MWh)", "Summer peak rating (MW)",
+            "Summer typical rating (MW)", "Winter rating (MW)", "Minimum Stable Limit",
+            "No-Load Heat Rate", "Marginal Heat Rate", "Pumping efficiency (%)",
+            "Charge efficiency (%)", "Discharge efficiency (%)", "Allowable max state of charge (%)",
+            "Allowable min state of charge (%)", "Round trip efficiency (%)", "Annual degradation (%)",
+            "Max Ramp Up (MW/min)", "Max Ramp Down (MW/min)",
+            "Maintenance - Proportion of time out (%)",
+            "Maintenance - Equivalent average days per year on planned outage",
+            "Full outage (% of time)", "Partial outage (% of time)", "Full outage MTTR (hrs)",
+            "Partial outage MTTR (hrs)", "Partial Outage Derating Factor (%)", "FOM (\$/kW/annum)",
+            "VOM (\$/MWh sent-out)", "Heat rate (GJ/MWh HHV s.o.)", "Fuel cost (\$/GJ)",
+            "Scope 1 Emissions (kg/MWh)", "MLF", "Auxiliary load (% of nameplate capacity)",
+            "SRMC (\$/MWh)", "Expected Closure Year (Calendar year)",
+            "Retirement / Rehabilitation cost (\$/MW)", "Fault Level Replacement Cost (\$M)",
+        ],
+    ),
+    (
+        id = :generator_emissions_intensity,
+        workbook = "2026-isp-inputs-and-assumptions-workbook.xlsm",
+        worksheet = "Emissions intensity",
+        cell_range = "B8:E734",
+        source_family = :generation,
+        columns = ["IASR ID", "Power Station", "Technology", "Scope 1 emissions intensity (kg/MWh as-gen)"],
+    ),
+    (
+        id = :new_entrant_emissions_intensity,
+        workbook = "2026-isp-inputs-and-assumptions-workbook.xlsm",
+        worksheet = "Emissions intensity",
+        cell_range = "G8:H29",
+        source_family = :generation,
+        columns = ["Technology", "Scope 1 emissions intensity (kg/MWh as-gen)"],
+    ),
+    (
+        id = :generator_maximum_capacity,
+        workbook = "2026-isp-inputs-and-assumptions-workbook.xlsm",
+        worksheet = "Maximum capacity",
+        cell_range = "B10:J736",
+        source_family = :generation,
+        columns = ["IASR ID", "Power Station", "Status5", "Technology", "Region",
+                   "Installed capacity (MW)", "Storage Capacity (MWh)", "Commissioning date", "Policy"],
+    ),
+    (
+        id = :new_entrant_maximum_capacity,
+        workbook = "2026-isp-inputs-and-assumptions-workbook.xlsm",
+        worksheet = "Maximum capacity",
+        cell_range = "L10:O31",
+        source_family = :generation,
+        columns = ["Technology Type", "Unit size (MW)", "Number of units", "Total plant size (MW)"],
+    ),
+    (
+        id = :generator_summary_mapping,
+        workbook = "2026-isp-inputs-and-assumptions-workbook.xlsm",
+        worksheet = "Summary Mapping",
+        cell_range = "B4:AF1381",
+        source_family = :generation,
+        columns = [
+            "RowID", "IASR ID / DLT names", "Power Station", "Technology Type", "Region",
+            "Sub-region", "REZ Location", "REZ ID", "Status", "Regional build cost zone",
+            "Uptake", "Fuel type", "Fuel cost mapping", "Maintenance duration (%)",
+            "Forced outage rate", "Partial outage (% of time)", "Mean time to repair",
+            "Partial outage", "Minimum load (MW)", "Maximum capacity factor (%)",
+            "FOM (\$/kW/annum)", "VOM (\$/MWh sent-out)", "Heat rate", "Pumping efficiency (%)",
+            "MLF", "Auxiliary load (%)", "Connection cost", "Region (2)", "Build limit", "Region (3)",
+            "Total lead time",
+        ],
+    ),
+    (
         id = :transmission_reliability,
         workbook = "2026-isp-inputs-and-assumptions-workbook.xlsm",
         worksheet = "Transmission Reliability",
@@ -136,6 +211,25 @@ const EXPECTED_ISP2026_CSV_SPECS = [
             expected.columns,
         )
     end
+
+    new_capacity = ParseISP.source_spec(:new_entrant_maximum_capacity, 2026)
+    @test [
+        (column.name, column.data_type, column.unit)
+        for column in new_capacity.columns
+    ] == [
+        ("Technology Type", nothing, nothing),
+        ("Unit size (MW)", :Real, "MW"),
+        ("Number of units", :Integer, nothing),
+        ("Total plant size (MW)", :Real, "MW"),
+    ]
+
+    existing = ParseISP.source_spec(:existing_generator_summary, 2026)
+    existing_descriptions = Dict(column.name => column.description for column in existing.columns)
+    @test existing_descriptions["Summer peak rating (MW)"] == "Workbook row 12: `2025-26`"
+    @test existing_descriptions["Fuel cost (\$/GJ)"] ==
+          "Workbook row 11: `Step Change`; Workbook row 12: `2025-26`"
+    @test existing_descriptions["Scope 1 Emissions (kg/MWh)"] ==
+          "Workbook row 11: `Accelerated Transition`; Workbook row 12: `2025-26`"
 
     expected_trace_columns = [
         "Year", "Month", "Day", lpad.(string.(1:48), 2, '0')...,
