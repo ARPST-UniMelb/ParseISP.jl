@@ -289,4 +289,8 @@ end
                       :generator_max_ramp_rates, :new_generator_max_ramp_rates) ? :generation_operation :
                :generation_reliability)
     end
+
+    coal_columns = ParseISP.source_spec(:coal_minimum_stable_level, 2026).columns
+    @test all(isnothing, getfield.(coal_columns[1:3], :unit))
+    @test getfield.(coal_columns[4:6], :unit) == fill("MW", 3)
 end

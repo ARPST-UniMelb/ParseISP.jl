@@ -104,5 +104,24 @@ end
         new_ramp = ParseISP.read_isp2026_new_generator_max_ramp_rates(workbook)
         @test new_ramp.source_row[1] == 9
         @test new_ramp[1, Symbol("Max Ramp Down (MW/min)")] == 8
+
+        wrong_header_workbook = joinpath(directory, "wrong-coal-header.xlsm")
+        XLSX.openxlsx(wrong_header_workbook, mode = "w") do file
+            sheet = XLSX.addsheet!(file, "Coal Min Stable Level")
+            _write_reliability_rows!(sheet, 12, 2, Any[
+                Any[
+                    "IASR ID", "Power Station", "Technology Type",
+                    "Minimum Stable Level (kW)", missing, missing,
+                ],
+                Any[
+                    missing, missing, missing, "IASR 2023 (Backcasting)",
+                    "Typical Lowest Band", "Minimum Continuous Operating Level",
+                ],
+                Any["GEN-1", "Example station", "Steam Sub Critical", 200, 180, 170],
+            ])
+        end
+        @test_throws ArgumentError ParseISP.read_isp2026_coal_minimum_stable_level(
+            wrong_header_workbook,
+        )
     end
 end

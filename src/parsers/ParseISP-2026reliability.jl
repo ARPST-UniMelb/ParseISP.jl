@@ -16,6 +16,13 @@ function _read_isp2026_reliability_table(
     size(raw, 2) == length(spec.columns) || throw(ArgumentError(
         "Source $(spec.id) returned $(size(raw, 2)) columns; expected $(length(spec.columns)).",
     ))
+    if spec.id === :coal_minimum_stable_level
+        parent_header = _isp2026_reliability_header(raw[1, 4])
+        parent_header == "Minimum Stable Level (MW)" || throw(ArgumentError(
+            "Source $(spec.id) expected parent header `Minimum Stable Level (MW)`, " *
+            "observed `$(parent_header)`.",
+        ))
+    end
 
     names = getfield.(spec.columns, :name)
     for column in axes(raw, 2)

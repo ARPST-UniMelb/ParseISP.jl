@@ -78,7 +78,10 @@ register_source_specs!(
         worksheet = "Coal Min Stable Level",
         cell_range = "B12:G57",
         description = "ISP 2026 coal minimum stable level series.",
-        columns = _isp2026_reliability_columns(_ISP2026_COAL_MINIMUM_COLUMNS),
+        columns = ColumnSpec[
+            ColumnSpec(name = name, unit = index > 3 ? "MW" : nothing)
+            for (index, name) in enumerate(_ISP2026_COAL_MINIMUM_COLUMNS)
+        ],
         source_family = :generation_operation,
     ),
     XlsxSourceSpec(
