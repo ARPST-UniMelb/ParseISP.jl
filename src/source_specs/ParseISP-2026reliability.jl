@@ -96,7 +96,7 @@ register_source_specs!(
         edition = 2026,
         workbook = _ISP2026_INPUTS_WORKBOOK,
         worksheet = "GPG Min Stable Level",
-        cell_range = "F11:G32",
+        cell_range = "G11:H32",
         description = "ISP 2026 new-entrant GPG minimum stable levels.",
         columns = _isp2026_reliability_columns(_ISP2026_NEW_GPG_MINIMUM_COLUMNS),
         source_family = :generation_operation,

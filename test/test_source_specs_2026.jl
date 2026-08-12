@@ -191,7 +191,7 @@ const EXPECTED_ISP2026_RELIABILITY_SPECS = [
     (:generator_retirement, "Retirement", "B12:F738"),
     (:coal_minimum_stable_level, "Coal Min Stable Level", "B12:G57"),
     (:gpg_minimum_stable_level, "GPG Min Stable Level", "B11:E150"),
-    (:new_gpg_minimum_stable_level, "GPG Min Stable Level", "F11:G32"),
+    (:new_gpg_minimum_stable_level, "GPG Min Stable Level", "G11:H32"),
     (:generator_max_ramp_rates, "Max Ramp Rates", "B8:F191"),
     (:new_generator_max_ramp_rates, "Max Ramp Rates", "H8:J29"),
 ]
