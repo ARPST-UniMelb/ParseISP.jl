@@ -62,5 +62,4 @@ julia --project=docs docs/make.jl
 ```
 
 Data-dependent Literate pages require the report, download, or generated-output roots declared by their registry entries.
-The maintainer guide in `docs/README.md` defines the detailed registry, data-preflight, render-selection, and publication workflow.
-Its **Prepare local data for complete regeneration** section provides the downloads and exact ISP 2024 dataset configuration required to regenerate every published Literate page.
+The maintainer guide in `docs/README.md` defines the detailed registry, data-preflight, render-selection, and publication workflow, including the local ISP 2024 data roots required to regenerate published Literate pages.

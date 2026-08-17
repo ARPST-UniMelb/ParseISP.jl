@@ -122,4 +122,4 @@ The [ISP 2024 output tables](generated/isp2024/reference/output-tables.md) page 
 - [Domain concepts](concepts.md) explains assets, schedules, scenarios, traces, and the aggregated network model.
 - [Assumptions and scope](assumptions.md) identifies study-relevant caveats and validation responsibilities.
 - [API reference](api.md) documents complete build and acquisition options.
-- [Supported ISP editions](editions/supported-editions.md) defines the ISP 2024 and ISP 2026 capability boundary.
+- [Supported ISP edition](editions/supported-editions.md) summarises the documented ISP 2024 capability boundary.
