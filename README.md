@@ -64,33 +64,7 @@ ParseISP.download_ISP24_reports(
     outdir    = joinpath(@__DIR__, "..", "data", "2024", "pisp-reports"),
     overwrite = false,
     )
-
-ParseISP.download_ISP26_reports(
-    outdir    = joinpath(@__DIR__, "..", "data", "2026", "pisp-reports"),
-    overwrite = false,
-    )
 ```
-
-## Download 2026 ISP source data
-
-Download 2026 ISP source assets from AEMO:
-
-```julia
-using ParseISP
-
-isp2026_downloads_dir = joinpath(@__DIR__, "..", "data", "2026", "pisp-downloads")
-source_paths = ParseISP.download_isp2026_assets(
-    outdir    = isp2026_downloads_dir,
-    overwrite = false,
-    )
-
-ParseISP.ISPdatabuilder.extract_downloads(
-    data_root = isp2026_downloads_dir,
-)
-```
-
-> [!NOTE]
-> The 2026 ISP parser is still under review, see [ParseISP.jl](https://github.com/airampg/ParseISP.jl).
 
 ## Optional parameters for ParseISP.build_ISP24_datasets()
 
@@ -347,14 +321,12 @@ Equivalently, press `]` to enter the Pkg REPL and run `test`.
 
 ### Tests that need local data skip automatically
 
-Some test sets exercise the ISP report and source downloaders against the on-disk data layout. When the matching local data is absent, those tests report as *skipped* instead of failing, so a fresh checkout without the large AEMO assets still runs green. The suite looks for data under `data/<edition>/pisp-reports` and `data/<edition>/pisp-downloads` (for editions `2024` and `2026`). To point it at data kept elsewhere, set any of these environment variables before running the tests:
+Some test sets exercise the ISP report and source downloaders against the on-disk data layout. When the matching local data is absent, those tests report as *skipped* instead of failing, so a fresh checkout without the large AEMO assets still runs green. The suite looks for data under `data/2024/pisp-reports` and `data/2024/pisp-downloads`. To point it at data kept elsewhere, set any of these environment variables before running the tests:
 
 | Environment variable         | Selects                            |
 | ---------------------------- | ---------------------------------- |
 | `ParseISP_ISP2024_REPORT_ROOT`   | ISP 2024 report PDFs               |
 | `ParseISP_ISP2024_DOWNLOAD_ROOT` | ISP 2024 model and trace downloads |
-| `ParseISP_ISP2026_REPORT_ROOT`   | ISP 2026 report PDFs               |
-| `ParseISP_ISP2026_DOWNLOAD_ROOT` | ISP 2026 model and trace downloads |
 
 A few tests also skip themselves when the `zip` / `unzip` command-line tools are not available.
 
