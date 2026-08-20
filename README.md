@@ -11,6 +11,11 @@ The data parsing functionalities are built on publicly available information fro
 
 ## Core function
 
+> [!CAUTION]
+> The data-files of the 2024 ISP that are provided by AEMO have been updated in June 2026. This introduces breaking changes (of the handling of the trace files, including missing and unclear traces of some renewable power plants). As current work is focused on developing a parser for the 2026 ISP files, these changes are not reflected in *ParseISP.jl*. 
+> Please contact the research team for the original files (downloaded in May 2026) or download the traces manually via the [Web Archive](https://web.archive.org/web/20251117135835/https://www.aemo.com.au/energy-systems/major-publications/integrated-system-plan-isp/2024-integrated-system-plan-isp) and replace the downloaded traces in the download folder.
+
+
 Dataset construction in ParseISP is performed through a high-level function, `build_ISP24_datasets`. Usage examples are shown below.
 
 **By planning year** (original mode):
